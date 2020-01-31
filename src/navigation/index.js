@@ -8,11 +8,22 @@ import StatsScreen from '../screens/Stats';
 import SettingsScreen from '../screens/Settings';
 import TimerScreen from '../screens/Timer';
 import TodoScreen from '../screens/Todo';
+import TodoDetailsScreen from '../screens/TodoDetails'
 
 const TodoNavigator = createStackNavigator({
     Todo: {
         screen: TodoScreen
     },
+    TodoDetails: {
+        screen: TodoDetailsScreen,
+        navigationOptions: {
+            headerTitle: 'Todo Details',
+            headerStyle: {
+                backgroundColor: '#009DDD'
+            },
+            headerTintColor: '#fff'
+        }
+    }
 })
 
 const routeConfigs = {

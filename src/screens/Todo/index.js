@@ -1,28 +1,31 @@
 import React, { Component } from 'react';
-import { Text, View, SafeAreaView, TouchableOpacity } from 'react-native';
+import { SafeAreaView, Button } from 'react-native';
+import { connect } from 'react-redux';
 
 import AddButton from './components/AddButton';
-import ToggleTodoButton from './components/ToggleTodoButton'
+import ToggleTodoButton from './components/ToggleTodoButton';
+import TodoItem from './components/TodoItem';
+import { toggleTodo } from '../../store/actions/todoActions';
 
-export default class Todo extends Component {
+class Todo extends Component {
     static navigationOptions = ({ navigation }) => {
-        const { state: { params = {} } } = navigation
+        const { state: { params = {} }, navigate } = navigation
         return {
             headerStyle: {
                 backgroundColor: "#009DDD"
             },
-            headerLeft: () => <AddButton />,
+            headerLeft: () => <AddButton navigate={navigate} />,
             headerTitle: () => <ToggleTodoButton
-                                    todoTabState={params.todoButtonState}
-                                    doneTabState={params.doneButtonState}
-                                    changeTab={params.changeTab} 
-                                    />,
+                todoTabState={params.todoButtonState}
+                doneTabState={params.doneButtonState}
+                changeTab={params.changeTab}
+            />,
         }
     }
 
     state = {
         todoTabState: true,
-        doneTabState: false
+        doneTabState: false,
     }
 
     componentDidMount() {
@@ -50,13 +53,36 @@ export default class Todo extends Component {
         })
     }
 
+    toggleCheckbox = (id, isChecked) => {
+        this.props.toggleTodo(id, isChecked)
+    }
+
+    renderTodoList = () => {
+        return this.props.todos.map((data, index) => {
+            return (
+                <TodoItem key={index} data={data} toggleCheckbox={this.toggleCheckbox} />
+            )
+        })
+    }
+
     render() {
+        console.log(this.props.todos)
         return (
-            <SafeAreaView>
-                <View>
-                    <Text> Todo </Text>
-                </View>
+            <SafeAreaView
+                style={{
+                    marginVertical: 10
+                }}
+            >
+                {this.renderTodoList()}
             </SafeAreaView>
         )
     }
 }
+
+const mapStateToProps = state => ({
+    todos: state.todos
+})
+
+export default connect(mapStateToProps, {
+    toggleTodo
+})(Todo)

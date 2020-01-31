@@ -1,23 +1,25 @@
 import React from 'react';
-import { Text, View, Dimensions, StyleSheet } from 'react-native';
+import { Text, View, Dimensions, StyleSheet, TouchableOpacity } from 'react-native';
 import { MaterialCommunityIcons, Ionicons } from '@expo/vector-icons';
 
 const { width } = Dimensions.get('window');
 
-export default () => (
-    <View style={styles.todoContainer}>
-        <View style={{ flexDirection: "row", }}>
-            <MaterialCommunityIcons name="checkbox-marked-outline" color="green" size={32} />
-            <View style={styles.todoTextContainer}>
-                <Text style={styles.todoText}>Go to Town</Text>
+export default ({ data: { title, isChecked, id }, toggleCheckbox }) => (
+    <TouchableOpacity activeOpacity={0.9}>
+        <View style={styles.todoContainer}>
+            <View style={{ flexDirection: "row", }}>
+                <MaterialCommunityIcons onPress={() => toggleCheckbox(id, !isChecked)} name={isChecked ? "checkbox-marked-outline" : "checkbox-blank-outline"} color="green" size={32} />
+                <View style={styles.todoTextContainer}>
+                    <Text style={styles.todoText}>{title}</Text>
+                </View>
+            </View>
+            <View style={styles.iconContainer}>
+                <Ionicons name="ios-arrow-up" color="green" size={25} />
+                <View style={{ width: 10 }} />
+                <Ionicons name="ios-arrow-down" color="green" size={25} />
             </View>
         </View>
-        <View style={styles.iconContainer}>
-            <Ionicons name="ios-arrow-up" color="green" size={25} />
-            <View style={{ width: 10 }} />
-            <Ionicons name="ios-arrow-down" color="green" size={25} />
-        </View>
-    </View>
+    </TouchableOpacity>
 )
 
 const styles = StyleSheet.create({
