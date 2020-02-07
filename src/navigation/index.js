@@ -9,6 +9,9 @@ import SettingsScreen from '../screens/Settings';
 import TimerScreen from '../screens/Timer';
 import TodoScreen from '../screens/Todo';
 import TodoDetailsScreen from '../screens/TodoDetails'
+import TodoInfoScreen from '../screens/TodoInfo';
+
+import { headerNavigationOptions } from '../utils/helpers';
 
 const TodoNavigator = createStackNavigator({
     Todo: {
@@ -16,13 +19,10 @@ const TodoNavigator = createStackNavigator({
     },
     TodoDetails: {
         screen: TodoDetailsScreen,
-        navigationOptions: {
-            headerTitle: 'Todo Details',
-            headerStyle: {
-                backgroundColor: '#009DDD'
-            },
-            headerTintColor: '#fff'
-        }
+    },
+    TodoInfo: {
+        screen: TodoInfoScreen,
+        navigationOptions: () => headerNavigationOptions('Todo Details')
     }
 })
 

@@ -4,8 +4,8 @@ import { MaterialCommunityIcons, Ionicons } from '@expo/vector-icons';
 
 const { width } = Dimensions.get('window');
 
-export default ({ data: { title, isChecked, id }, toggleCheckbox }) => (
-    <TouchableOpacity activeOpacity={0.9}>
+export default ({ data: { title, isChecked, id }, toggleCheckbox, segue}) => (
+    <TouchableOpacity activeOpacity={0.9} onPress={segue}>
         <View style={styles.todoContainer}>
             <View style={{ flexDirection: "row", }}>
                 <MaterialCommunityIcons onPress={() => toggleCheckbox(id, !isChecked)} name={isChecked ? "checkbox-marked-outline" : "checkbox-blank-outline"} color="green" size={32} />

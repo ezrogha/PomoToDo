@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { SafeAreaView, Button } from 'react-native';
+import { SafeAreaView, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 
 import AddButton from './components/AddButton';
@@ -57,23 +57,34 @@ class Todo extends Component {
         this.props.toggleTodo(id, isChecked)
     }
 
+    segue = (data) => {
+        this.props.navigation.navigate('TodoInfo', data)
+    }
+
     renderTodoList = () => {
         return this.props.todos.map((data, index) => {
-            return (
-                <TodoItem key={index} data={data} toggleCheckbox={this.toggleCheckbox} />
-            )
+            if (this.state.todoTabState && !data.isChecked) {
+                return (
+                    <TodoItem key={index} data={data} toggleCheckbox={this.toggleCheckbox} segue={() => this.segue(data)} />
+                )
+            } else if(!this.state.todoTabState && data.isChecked){
+                return (
+                    <TodoItem key={index} data={data} toggleCheckbox={this.toggleCheckbox} segue={() => this.segue(data)} />
+                )
+            }
         })
     }
 
     render() {
-        console.log(this.props.todos)
         return (
             <SafeAreaView
                 style={{
                     marginVertical: 10
                 }}
             >
-                {this.renderTodoList()}
+                <ScrollView>
+                    {this.renderTodoList()}
+                </ScrollView>
             </SafeAreaView>
         )
     }

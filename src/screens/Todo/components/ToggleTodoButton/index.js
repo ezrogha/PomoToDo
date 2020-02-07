@@ -2,7 +2,6 @@ import React from 'react'
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 
 export default ({ todoTabState, doneTabState, changeTab }) => {
-    console.log(`Todo: ${todoTabState}, Done: ${doneTabState}`)
     return (
     <View style={styles.view}>
         <TouchableOpacity activeOpacity={1} onPress={() => changeTab(0)} style={[ styles.button, todoTabState && styles.active ]}>

@@ -8,3 +8,11 @@ export const getTime = (time) => {
     const seconds = time % 60
     return `${addZero(minutes)}:${addZero(seconds)}`
 }
+
+export const headerNavigationOptions = (headerTitle) => ({
+    headerTitle: headerTitle,
+    headerStyle: {
+        backgroundColor: '#009DDD'
+    },
+    headerTintColor: '#fff'
+})

@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Text, View, TextInput, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 
-import { addTodo } from '../../store/actions/todoActions';
+import { addTodo, editTodo } from '../../store/actions/todoActions';
+import { headerNavigationOptions } from '../../utils/helpers'
 
 class TodoDetails extends Component {
 
@@ -12,19 +13,38 @@ class TodoDetails extends Component {
         detail: ''
     }
 
+    static navigationOptions = ({ navigation }) => {
+        const { state: { params = {} } } = navigation
+        return headerNavigationOptions(params.editRequest ? 'Edit Todo' : 'Create Todo')
+    }
+
+    componentDidMount() {
+        const { state: { params = {} } } = this.props.navigation
+        if (params.editRequest) {
+            const { todoItem } = params
+            this.setState(todoItem)
+        }
+    }
+
     onSaveTodo = () => {
         if (this.state.title === '') {
             Alert.alert(
                 'Add a title',
                 'Please fill out what you intend to accomplish.',
                 [
-                    { text: 'OK'},
+                    { text: 'OK' },
                 ],
                 { cancelable: true }
             );
             return false
         }
-        this.props.addTodo(this.state)
+        const { state: { params = {} } } = this.props.navigation
+        if (params.editRequest) {
+            const { id, title, detail } = this.state;
+            this.props.editTodo({ id, title, detail })
+        } else {
+            this.props.addTodo(this.state)
+        }
         this.props.navigation.navigate('Todo')
     }
 
@@ -37,7 +57,6 @@ class TodoDetails extends Component {
     }
 
     render() {
-        console.log(this.props)
         return (
             <View style={{
                 margin: 20
@@ -63,10 +82,11 @@ class TodoDetails extends Component {
 
 const mapStateToProps = state => {
     return {}
-  }
+}
 
 export default connect(mapStateToProps, {
-    addTodo
+    addTodo,
+    editTodo
 })(TodoDetails)
 
 
