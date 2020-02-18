@@ -10,7 +10,8 @@ class TodoDetails extends Component {
     state = {
         isChecked: false,
         title: '',
-        detail: ''
+        detail: '',
+        isRunning: false
     }
 
     static navigationOptions = ({ navigation }) => {
@@ -40,6 +41,7 @@ class TodoDetails extends Component {
         }
         const { state: { params = {} } } = this.props.navigation
         if (params.editRequest) {
+            // If we are editing the todo item
             const { id, title, detail } = this.state;
             this.props.editTodo({ id, title, detail })
         } else {

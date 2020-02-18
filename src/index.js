@@ -13,7 +13,6 @@ export default class SvgCircularAnimation extends Component {
             circleValue: new Animated.Value(0),
             seconds: 10,
             animationRunning: true,
-            
         }
     }
 
