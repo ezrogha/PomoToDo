@@ -17,32 +17,21 @@ export default ({ seconds, renderPausePlay, circleValue }) => {
         inputRange: [0, 1],
         outputRange: [0, 2 * Math.PI]
     })
-    const strokeDashOffset = Animated.multiply(arc, radius)
+    const strokeDashoffset = Animated.multiply(arc, radius)
+    const circleProps = { cx: size / 2, cy: size / 2, fill: "none", r: radius, strokeWidth, strokeDashoffset, strokeDasharray: `${circumference} ${circumference}` }
     return (
         <View style={styles.container}>
             <Svg width={size} height={size}>
                 <Circle
-                    cx={size / 2}
-                    cy={size / 2}
+                    {...circleProps}
                     stroke="lightgrey"
-                    fill="none"
-                    r={radius}
-                    strokeWidth={strokeWidth}
-                    strokeDashoffset={strokeDashOffset}
-                    strokeDasharray={`${circumference} ${circumference}`}
                 />
                 <AnimatedCircle
-                    cx={size / 2}
-                    cy={size / 2}
+                    {...circleProps}
                     stroke="#009DDD"
-                    fill="none"
-                    r={radius}
-                    strokeWidth={strokeWidth}
-                    strokeDashoffset={strokeDashOffset}
-                    strokeDasharray={`${circumference} ${circumference}`}
                 />
                 {renderPausePlay()}
-                <SVGText x={(size / 5) + 5} y={(size / 2) + 10} fontSize="80" fill="#009DDD" strokeWidth="2">{getTime(seconds)}</SVGText> 
+                <SVGText x={(size / 5) + 5} y={(size / 2) + 10} fontSize="80" fill="#009DDD" strokeWidth="2">{getTime(seconds)}</SVGText>
             </Svg>
         </View>
     )

@@ -6,7 +6,7 @@ import Pause from './components/Pause';
 import Play from './components/Play';
 import TodoInput from './components/TodoInput';
 
-export default class SvgCircularAnimation extends Component {
+export default class CircularTimerAnimation extends Component {
 
     constructor() {
         super()
@@ -16,35 +16,35 @@ export default class SvgCircularAnimation extends Component {
             timerInterval: null,
             circleValue: new Animated.Value(0),
             seconds: 25 * 60,
-            animationRunning: true,
+            animationRunning: false,
             todoText: ""
         }
     }
 
-    componentDidMount() {
-        this.setState({ timerInterval: this.startTimer(this.state.seconds) })
-        Animated.timing(this.state.circleValue, {
-            toValue: 1,
-            duration: this.state.seconds * 1000,
-            easing: Easing.linear
-        }).start()
-        this.setState({
-            animationRunning: true
-        })
+    restructureTime = (seconds) => {
+        const minutes = seconds / 60
+        return seconds + (minutes - 1)
     }
-    
-    componentWillUnmount(){
+
+    static getDerivedStateFromProps(props, state) {
+        const { state: { params = {} } } = props.navigation
+        if ("title" in params) {
+            return { todoText: params.title }
+        }
+        return null
+    }
+
+    componentWillUnmount() {
         this.setState({ timerInterval: 0 })
         clearInterval(this.state.timerInterval)
     }
 
     startTimer = (secs) => {
-        setTimeout(() => {
-            clearInterval(interval)
-        }, (secs + 1) * 1000)
         const interval = setInterval(() => {
-            const newSecond = this.state.seconds - 1
-            this.setState({ seconds: newSecond })
+            if (this.state.seconds === 0) {
+                return clearInterval(interval)
+            }
+            this.setState((state) => ({ seconds: state.seconds - 1 }))
         }, 1000)
         return interval
     }
@@ -60,7 +60,7 @@ export default class SvgCircularAnimation extends Component {
         } else {
             Animated.timing(this.state.circleValue, {
                 toValue: 1,
-                duration: this.state.seconds * 1000,
+                duration: this.restructureTime(this.state.seconds) * 1000,
                 easing: Easing.linear
             }).start()
             this.setState({
@@ -91,12 +91,12 @@ export default class SvgCircularAnimation extends Component {
         this.setState({ todoText: val })
     }
 
-
     render() {
+        const { todoText, isCaretHidden, seconds, circleValue } = this.state
         return (
             <SafeAreaView style={styles.container}>
-                <TodoInput text={this.state.todoText} onChange={this.onChangeTodoText} />
-                <Clock seconds={this.state.seconds} renderPausePlay={this.renderPausePlay} circleValue={this.state.circleValue} />
+                <TodoInput text={todoText} onChange={this.onChangeTodoText} />
+                <Clock seconds={seconds} renderPausePlay={this.renderPausePlay} circleValue={circleValue} />
             </SafeAreaView>
         )
     }
