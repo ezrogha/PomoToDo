@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { createAppContainer } from 'react-navigation';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 import { createStackNavigator } from 'react-navigation-stack'
@@ -26,6 +26,20 @@ const TodoNavigator = createStackNavigator({
     }
 })
 
+const SettingNavigator = createStackNavigator({
+    Settings: {
+        screen: SettingsScreen,
+        navigationOptions: () => headerNavigationOptions('Settings')
+    }
+})
+
+const StatsNavigator = createStackNavigator({
+    Stats: {
+        screen: StatsScreen,
+        navigationOptions: () => headerNavigationOptions('Stats')
+    }
+})
+
 const routeConfigs = {
     Todo: {
         screen: TodoNavigator
@@ -34,10 +48,10 @@ const routeConfigs = {
         screen: TimerScreen
     },
     Stats: {
-        screen: StatsScreen
+        screen: StatsNavigator
     },
     Settings: {
-        screen: SettingsScreen
+        screen: SettingNavigator
     }
 }
 
