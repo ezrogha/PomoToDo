@@ -1,9 +1,14 @@
 import React, { Component } from 'react';
-import { Text, View, SafeAreaView, ScrollView, StyleSheet, TouchableOpacity, Picker, Dimensions } from 'react-native';
+import { Text, View, SafeAreaView, ScrollView, StyleSheet, TouchableOpacity, Animated, Dimensions, Easing, TextInput } from 'react-native';
 import ListItem from './components/ListItem';
 import FlexiblePicker from './components/FlexiblePicker';
 
 const { width, height } = Dimensions.get('window')
+
+const workIntervalTimes = ["Custom", 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60]
+const shortBreakTimes = ["Custom", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 15]
+const longBreakTimes = ["Custom", 0, 5, 10, 15, 20, 25, 30, 35, 40]
+const intervalTimes = ["Custom", 0, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
 export default class Settings extends Component {
     state = {
@@ -11,25 +16,100 @@ export default class Settings extends Component {
         shortBreak: 5,
         longBreak: 15,
         longBreakAfter: 4,
+        currentListItem: '',
         pickerSelectedValue: 0,
         pickerItemArray: [],
-        pickerMetric: ''
+        pickerMetric: '',
+        displayModal: false,
+        xModalValue: new Animated.Value(-(height / 2)),
+        opacityModalValue: new Animated.Value(0),
+        showCustomInputbox: false,
     }
 
-    onUpdatePicker = (value, selectedStateKey, array, metric ) => {
-        this.setState({ workInterval: value })
+    onUpdatePicker = (value) => {
+        if (value === "Custom") {
+            this.setState({
+                showCustomInputbox: true,
+                pickerSelectedValue: value
+            })
+            this._customTextInput.focus()
+        } else {
+            this.setState({
+                showCustomInputbox: false,
+                pickerSelectedValue: value,
+            })
+        }
+    }
+
+    triggerModal = ({ list, selectedValue, listItem, metric }) => {
+        this.setState({
+            displayModal: true,
+            pickerItemArray: list,
+            pickerSelectedValue: selectedValue,
+            currentListItem: listItem,
+            pickerMetric: metric
+        })
+        Animated.parallel([
+            Animated.timing(this.state.xModalValue, {
+                toValue: 0,
+                duration: 100,
+                easing: Easing.linear
+            }),
+            Animated.timing(this.state.opacityModalValue, {
+                toValue: 1,
+                duration: 100,
+                easing: Easing.linear
+            })
+        ]).start()
+    }
+
+    hideModal = () => {
+        Animated.parallel([
+            Animated.timing(this.state.xModalValue, {
+                toValue: -(height / 2),
+                duration: 100,
+                easing: Easing.linear
+            }),
+            Animated.timing(this.state.opacityModalValue, {
+                toValue: 0,
+                duration: 200,
+                easing: Easing.linear
+            })
+        ]).start(() => {
+            this.setState({
+                displayModal: false
+            })
+        })
+    }
+
+    savePickerValue = () => {
+        if (this.state.pickerSelectedValue === "Custom") {
+            this.setState({
+                [this.state.currentListItem]: this.state.customPickerInputValue
+            }, () => {
+                this.setState({
+                    customPickerInputValue: 0,
+                    showCustomInputbox: false
+                })
+            })
+        } else {
+            this.setState({
+                [this.state.currentListItem]: this.state.pickerSelectedValue
+            })
+        }
+        this.hideModal()
     }
 
     render() {
         return (
-            <SafeAreaView>
+            <SafeAreaView style={{ flex: 1 }}>
                 <ScrollView>
                     <View style={{ height: 10 }} />
                     <View style={styles.listContainer}>
-                        <ListItem title="Work Interval" value={`${this.state.workInterval} minutes`} />
-                        <ListItem title="Short Break" value={`${this.state.shortBreak} minutes`} />
-                        <ListItem title="Long Break" value={`${this.state.longBreak} minutes`} />
-                        <ListItem title="Long Break After" value={`${this.state.longBreakAfter} intervals`} />
+                        <ListItem title="Work Interval" value={`${this.state.workInterval} minutes`} triggerModal={this.triggerModal.bind(this, { list: [...workIntervalTimes], selectedValue: this.state.workInterval, listItem: "workInterval", metric: "minutes" })} />
+                        <ListItem title="Short Break" value={`${this.state.shortBreak} minutes`} triggerModal={this.triggerModal.bind(this, { list: [...shortBreakTimes], selectedValue: this.state.shortBreak, listItem: "shortBreak", metric: "minutes" })} />
+                        <ListItem title="Long Break" value={`${this.state.longBreak} minutes`} triggerModal={this.triggerModal.bind(this, { list: [...longBreakTimes], selectedValue: this.state.longBreak, listItem: "longBreak", metric: "minutes" })} />
+                        <ListItem title="Long Break After" value={`${this.state.longBreakAfter} intervals`} triggerModal={this.triggerModal.bind(this, { list: [...intervalTimes], selectedValue: this.state.longBreakAfter, listItem: "longBreakAfter", metric: "intervals" })} />
                     </View>
 
                     <View>
@@ -42,16 +122,36 @@ export default class Settings extends Component {
                         </View>
                     </View>
 
-                    <View>
-                        <FlexiblePicker
-                            selectedValue={this.state.workInterval}
-                            updatePicker={this.onUpdatePicker}
-                            itemArray={[25, 20, 15]}
-                            metric={'minutes'}
-                        />
-                    </View>
-
                 </ScrollView>
+                <Animated.View style={[styles.PopupContainer, {
+                    display: this.state.displayModal ? "flex" : "none",
+                    opacity: this.state.opacityModalValue
+                }]}>
+                    <Animated.View style={[styles.PickerView, { bottom: this.state.xModalValue }]}>
+                        <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+                            <TouchableOpacity style={styles.PickerButton} onPress={this.hideModal}>
+                                <Text style={styles.PickerButtonText}>Cancel</Text>
+                            </TouchableOpacity>
+                            <TextInput
+                                selectionColor={'#007BBB'}
+                                // keyboardType="numeric"
+                                value={this.state.customPickerInputValue}
+                                onChangeText={(value) => this.setState({ customPickerInputValue: value })}
+                                ref={component => this._customTextInput = component}
+                                style={[styles.customPickerInput, { opacity: this.state.showCustomInputbox ? 1 : 0 }]}
+                            />
+                            <TouchableOpacity style={styles.PickerButton} onPress={this.savePickerValue}>
+                                <Text style={styles.PickerButtonText}>OK</Text>
+                            </TouchableOpacity>
+                        </View>
+                        <FlexiblePicker
+                            selectedValue={this.state.pickerSelectedValue}
+                            updatePicker={this.onUpdatePicker}
+                            itemArray={this.state.pickerItemArray}
+                            metric={this.state.pickerMetric}
+                        />
+                    </Animated.View>
+                </Animated.View>
             </SafeAreaView>
         )
     }
@@ -72,5 +172,34 @@ const styles = StyleSheet.create({
     listHeaderText: {
         fontSize: 13,
         color: 'grey'
+    },
+    PickerButton: {
+        marginHorizontal: 5,
+        padding: 10
+    },
+    PickerButtonText: {
+        fontSize: 18,
+        color: "#007BBB"
+    },
+    PopupContainer: {
+        position: "absolute",
+        width,
+        height,
+        backgroundColor: "rgba(0,0,0,0.5)"
+    },
+    PickerView: {
+        backgroundColor: "#fff",
+        position: "absolute",
+        width,
+        height: height / 2
+    },
+    customPickerInput: {
+        width: 50,
+        borderColor: "#007BBB",
+        borderWidth: 1,
+        textAlign: "center",
+        borderRadius: 5,
+        marginTop: 10,
+        marginRight: 20
     }
 })

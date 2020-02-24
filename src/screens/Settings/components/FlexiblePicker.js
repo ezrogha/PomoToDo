@@ -4,7 +4,7 @@ import { Picker } from 'react-native'
 export default ({ selectedValue, updatePicker, itemArray, metric }) => {
     const renderPickerItems = () => {
         return itemArray.map((value, index) => {
-            return <Picker.Item key={index} label={`${value} ${metric}`} value={value} />
+            return <Picker.Item key={index} label={`${value} ${value !== "Custom" ? metric : ''}`} value={value} />
         })
     }
     

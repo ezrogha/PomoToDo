@@ -1,13 +1,13 @@
 import React from 'react'
 import { Text, View, TouchableOpacity, StyleSheet } from 'react-native'
 
-export default ({ title, value }) => (
-    <TouchableOpacity style={styles.listItem}>
+export default ({ title, value, triggerModal }) => (
+    <TouchableOpacity style={styles.listItem} onPress={triggerModal}>
         <View>
-            <Text style={styles.listItemText}>{title}</Text>
+            <Text style={[styles.listItemText, { color: "#333" } ]}>{title}</Text>
         </View>
         <View>
-            <Text style={styles.listItemText}>{value}</Text>
+            <Text style={[styles.listItemText, { color: "#aaa" }]}>{value}</Text>
         </View>
     </TouchableOpacity>
 )

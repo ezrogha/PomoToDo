@@ -7,7 +7,7 @@ import ToggleTodoButton from './components/ToggleTodoButton';
 import TodoItem from './components/TodoItem';
 import { toggleTodo, deleteTodo, startTodo, stopTodo } from '../../store/actions/todoActions';
 
-const { width } = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 
 class Todo extends Component {
     static navigationOptions = ({ navigation }) => {
@@ -31,6 +31,10 @@ class Todo extends Component {
         unCheckedItems: [],
         checkedItems: [],
         xTodoValues: [],
+        notificationText: "",
+        natificationColor: "rgba(0, 128, 0, 0.5)",
+        notificationOpacityValue: new Animated.Value(0),
+        notificationYValue: new Animated.Value(0)
     }
 
     static getDerivedStateFromProps(props, state) {
@@ -51,6 +55,37 @@ class Todo extends Component {
         })
     }
 
+    triggerNotification = () => {
+        Animated.parallel([
+            Animated.timing(this.state.notificationOpacityValue, {
+                toValue: 1,
+                duration: 400,
+                easing: Easing.back()
+            }),
+            Animated.timing(this.state.notificationYValue, {
+                toValue: height * (2 / 100),
+                duration: 400,
+                easing: Easing.back()
+            })
+        ]).start(() => {
+            setTimeout(() => {
+                Animated.parallel([
+                    Animated.timing(this.state.notificationOpacityValue, {
+                        toValue: 0,
+                        duration: 500,
+                        easing: Easing.back()
+                    }),
+                    Animated.timing(this.state.notificationYValue, {
+                        toValue: 0,
+                        duration: 500,
+                        easing: Easing.back()
+                    })
+                ]).start()
+            }, 2000)
+        })
+
+    }
+
     changeTab = (val) => {
         // 0 is for Todo
         // 1 is for Done
@@ -69,6 +104,11 @@ class Todo extends Component {
 
     toggleCheckbox = ({ id, isChecked }) => {
         this.props.toggleTodo(id, isChecked)
+        this.setState({ 
+            natificationColor: "rgba(0, 128, 0, 0.5)",
+            notificationText: isChecked ? "Task has been checked" : "Task has been unchecked"
+        })
+        this.triggerNotification()
     }
 
     animateDeletion = (id) => {
@@ -86,8 +126,13 @@ class Todo extends Component {
         ).start(() => {
             this.props.deleteTodo(id)
             this.setState({ todoTabState: !this.state.todoTabState }, () => {
-                this.setState({ todoTabState: !this.state.todoTabState })
+                this.setState({ 
+                    todoTabState: !this.state.todoTabState,
+                    natificationColor: "rgba(256, 0, 0, 0.5)",
+                    notificationText: "Task has been deleted"
+                })
             })
+            this.triggerNotification()
         })
     }
 
@@ -106,7 +151,7 @@ class Todo extends Component {
     segueToTimer = ({ title, id }) => {
         // START TIMER
         //Check if timer is running
-        const isTimerRunning = this.props.todos.findIndex(({isRunning}) => isRunning === true )
+        const isTimerRunning = this.props.todos.findIndex(({ isRunning }) => isRunning === true)
         if (isTimerRunning !== -1) {
             // If there is another task running
             Alert.alert(
@@ -168,13 +213,24 @@ class Todo extends Component {
         return (
             <SafeAreaView
                 style={{
-                    marginVertical: 10
+                    marginVertical: 10,
+                    flex: 1
                 }}
             >
                 <ScrollView>
                     {this.checkIfListIsEmpty()}
                     {this.renderTodoList()}
                 </ScrollView>
+                <Animated.View style={[
+                    styles.notificationView,
+                    {
+                        opacity: this.state.notificationOpacityValue,
+                        bottom: this.state.notificationYValue,
+                        backgroundColor: this.state.natificationColor
+                    }
+                ]}>
+                    <Text style={{ fontSize: 17, fontWeight: "bold", color: "#fff" }}>{this.state.notificationText}</Text>
+                </Animated.View>
             </SafeAreaView>
         )
     }
@@ -201,5 +257,14 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight: "bold",
         color: 'lightgrey'
+    },
+    notificationView: {
+        position: "absolute",
+        height: 40, width: width * (70 / 100),
+        // backgroundColor: "rgba(0, 128, 0, 0.5)",
+        borderRadius: 5,
+        alignSelf: "center",
+        alignItems: "center",
+        justifyContent: "center",
     }
 })
