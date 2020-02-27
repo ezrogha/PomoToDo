@@ -1,9 +1,20 @@
 import React, { Component } from 'react';
-import { Text, View, SafeAreaView, ScrollView, StyleSheet, TouchableOpacity, Animated, Dimensions, Easing, TextInput } from 'react-native';
+import {
+    Text,
+    View,
+    SafeAreaView,
+    ScrollView,
+    StyleSheet,
+    TouchableOpacity,
+    Animated,
+    Dimensions,
+    Easing,
+    TextInput
+} from 'react-native';
 import ListItem from './components/ListItem';
 import FlexiblePicker from './components/FlexiblePicker';
 
-const { width, height } = Dimensions.get('window')
+const { width, height } = Dimensions.get('window');
 
 const workIntervalTimes = ["Custom", 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60]
 const shortBreakTimes = ["Custom", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 15]

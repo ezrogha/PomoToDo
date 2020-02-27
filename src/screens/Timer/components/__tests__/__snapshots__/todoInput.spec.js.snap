@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Testing TodoInput Component renders correctly 1`] = `
+<View
+  style={
+    Object {
+      "position": "absolute",
+      "top": 222.33333333333334,
+      "zIndex": 50,
+    }
+  }
+>
+  <TextInput
+    allowFontScaling={true}
+    placeholder="Enter Task name..."
+    rejectResponderTermination={true}
+    style={
+      Object {
+        "color": "grey",
+        "fontSize": 18,
+      }
+    }
+    underlineColorAndroid="transparent"
+  />
+</View>
+`;

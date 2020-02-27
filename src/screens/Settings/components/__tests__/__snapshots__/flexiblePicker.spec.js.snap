@@ -1,0 +1,39 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Testing FlexiblePicker Component renders correctly 1`] = `
+<View>
+  <RCTPicker
+    items={
+      Array [
+        Object {
+          "label": "0 minutes",
+          "textColor": undefined,
+          "value": 0,
+        },
+        Object {
+          "label": "1 minutes",
+          "textColor": undefined,
+          "value": 1,
+        },
+        Object {
+          "label": "2 minutes",
+          "textColor": undefined,
+          "value": 2,
+        },
+      ]
+    }
+    onChange={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    selectedIndex={0}
+    style={
+      Array [
+        Object {
+          "height": 216,
+        },
+        undefined,
+      ]
+    }
+  />
+</View>
+`;

@@ -1,0 +1,86 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Testing ToggleTodoButton Component snapshot test 1`] = `
+<View
+  style={
+    Object {
+      "borderColor": "white",
+      "borderRadius": 2,
+      "borderWidth": 1,
+      "flexDirection": "row",
+    }
+  }
+>
+  <View
+    accessible={true}
+    focusable={true}
+    isTVSelectable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "opacity": 1,
+        "paddingBottom": 5,
+        "paddingLeft": 10,
+        "paddingRight": 10,
+        "paddingTop": 5,
+      }
+    }
+  >
+    <Text
+      style={
+        Array [
+          Object {
+            "color": "white",
+          },
+          false,
+        ]
+      }
+    >
+      Todo
+    </Text>
+  </View>
+  <View
+    accessible={true}
+    focusable={true}
+    isTVSelectable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "backgroundColor": "white",
+        "opacity": 1,
+        "paddingBottom": 5,
+        "paddingLeft": 10,
+        "paddingRight": 10,
+        "paddingTop": 5,
+      }
+    }
+  >
+    <Text
+      style={
+        Array [
+          Object {
+            "color": "white",
+          },
+          Object {
+            "color": "#009DDD",
+          },
+        ]
+      }
+    >
+      Done
+    </Text>
+  </View>
+</View>
+`;

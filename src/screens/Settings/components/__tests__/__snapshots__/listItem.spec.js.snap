@@ -1,0 +1,60 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Testing ListItem renders correctly 1`] = `
+<View
+  accessible={true}
+  focusable={false}
+  isTVSelectable={true}
+  onClick={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    Object {
+      "alignItems": "center",
+      "backgroundColor": "#fff",
+      "borderBottomColor": "lightgrey",
+      "borderBottomWidth": 0.4,
+      "flexDirection": "row",
+      "height": 50,
+      "justifyContent": "space-between",
+      "opacity": 1,
+      "paddingRight": 10,
+    }
+  }
+>
+  <View>
+    <Text
+      style={
+        Array [
+          Object {
+            "color": "rgb(100, 100, 100)",
+            "fontSize": 16,
+          },
+          Object {
+            "color": "#333",
+          },
+        ]
+      }
+    />
+  </View>
+  <View>
+    <Text
+      style={
+        Array [
+          Object {
+            "color": "rgb(100, 100, 100)",
+            "fontSize": 16,
+          },
+          Object {
+            "color": "#aaa",
+          },
+        ]
+      }
+    />
+  </View>
+</View>
+`;
