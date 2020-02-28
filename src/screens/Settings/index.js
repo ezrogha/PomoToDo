@@ -11,6 +11,9 @@ import {
     Easing,
     TextInput
 } from 'react-native';
+import { connect } from 'react-redux';
+
+import { setWorkInterval, setShortBreak, setLongBreak, setLongBreakAfter } from '../../store/actions/timerActions';
 import ListItem from './components/ListItem';
 import FlexiblePicker from './components/FlexiblePicker';
 
@@ -21,7 +24,7 @@ const shortBreakTimes = ["Custom", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 15]
 const longBreakTimes = ["Custom", 0, 5, 10, 15, 20, 25, 30, 35, 40]
 const intervalTimes = ["Custom", 0, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
-export default class Settings extends Component {
+class Settings extends Component {
     state = {
         workInterval: 25,
         shortBreak: 5,
@@ -50,6 +53,10 @@ export default class Settings extends Component {
                 pickerSelectedValue: value,
             })
         }
+    }
+
+    chooseAlarm = (route) => {
+        this.props.navigation.navigate("Alarms", { route })
     }
 
     triggerModal = ({ list, selectedValue, listItem, metric }) => {
@@ -93,10 +100,26 @@ export default class Settings extends Component {
         })
     }
 
+    setTimerValues = (selectedValue) => {
+        const { currentListItem,  } = this.state
+        const { setWorkInterval, setShortBreak, setLongBreak, setLongBreakAfter } = this.props
+        if (currentListItem === "workInterval") {
+            setWorkInterval(selectedValue)
+        } else if (currentListItem === "shortBreak") {
+            setShortBreak(selectedValue)
+        } else if (currentListItem === "longBreak") {
+            setLongBreak(selectedValue)
+        } else if (currentListItem === "longBreakAfter") {
+            setLongBreakAfter(selectedValue)
+        }
+    }
+
     savePickerValue = () => {
+        const { currentListItem, pickerSelectedValue, customPickerInputValue } = this.state
         if (this.state.pickerSelectedValue === "Custom") {
+            this.setTimerValues(customPickerInputValue)
             this.setState({
-                [this.state.currentListItem]: this.state.customPickerInputValue
+                [currentListItem]: customPickerInputValue
             }, () => {
                 this.setState({
                     customPickerInputValue: 0,
@@ -104,14 +127,16 @@ export default class Settings extends Component {
                 })
             })
         } else {
+            this.setTimerValues(pickerSelectedValue)
             this.setState({
-                [this.state.currentListItem]: this.state.pickerSelectedValue
+                [currentListItem]: pickerSelectedValue
             })
         }
         this.hideModal()
     }
 
     render() {
+        const { end_break_sound, work_completion_sound } = this.props.alarm
         return (
             <SafeAreaView style={{ flex: 1 }}>
                 <ScrollView>
@@ -128,8 +153,8 @@ export default class Settings extends Component {
                             <Text style={styles.listHeaderText}>NOTIFICATIONS</Text>
                         </View>
                         <View style={styles.listContainer}>
-                            <ListItem title="End Break Sound" value="Alarm Clock" />
-                            <ListItem title="Work Completion Sound" value="Alarm Clock" />
+                            <ListItem title="End Break Sound" value={end_break_sound} chooseAlarm={this.chooseAlarm.bind(this, "End Break")} />
+                            <ListItem title="Work Completion Sound" value={work_completion_sound} chooseAlarm={this.chooseAlarm.bind(this, "Work Completion")} />
                         </View>
                     </View>
 
@@ -167,6 +192,18 @@ export default class Settings extends Component {
         )
     }
 }
+
+const mapStateToProps = state => ({
+    alarm: state.alarm,
+    timer: state.timer
+})
+
+export default connect(mapStateToProps, {
+    setWorkInterval,
+    setShortBreak,
+    setLongBreak,
+    setLongBreakAfter
+})(Settings)
 
 const styles = StyleSheet.create({
     listContainer: {

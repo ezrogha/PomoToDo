@@ -8,7 +8,6 @@ export default class SvgCircularAnimation extends Component {
         super()
 
         this.state = {
-            // Add clock state 0 = idle, 1 = running, 2 = paused, 3= resumed
             timerInterval: null,
             circleValue: new Animated.Value(0),
             seconds: 10,

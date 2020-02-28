@@ -4,10 +4,10 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 export default ({ todoTabState, doneTabState, changeTab }) => {
     return (
         <View style={styles.view}>
-            <TouchableOpacity activeOpacity={1} onPress={changeTab.bind(this, 0)} style={[styles.button, todoTabState && styles.active]}>
+            <TouchableOpacity activeOpacity={1} onPress={() => changeTab(0)} style={[styles.button, todoTabState && styles.active]}>
                 <Text style={[styles.text, todoTabState && styles.activeText]}>Todo</Text>
             </TouchableOpacity>
-            <TouchableOpacity activeOpacity={1} onPress={changeTab.bind(this, 1)} style={[styles.button, doneTabState && styles.active]}>
+            <TouchableOpacity activeOpacity={1} onPress={() => changeTab(1)} style={[styles.button, doneTabState && styles.active]}>
                 <Text style={[styles.text, doneTabState && styles.activeText]}>Done</Text>
             </TouchableOpacity>
         </View>

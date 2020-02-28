@@ -4,7 +4,7 @@ import Settings from '..';
 import renderer from 'react-test-renderer'
 
 describe("<Settings /> ", () => {
-    test("renders correctly", () => {
+    test("should render correctly", () => {
         const tree = renderer.create(<Settings />).toJSON()
         expect(tree).toMatchSnapshot()
     })

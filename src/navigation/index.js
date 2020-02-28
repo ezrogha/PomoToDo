@@ -10,6 +10,7 @@ import TimerScreen from '../screens/Timer';
 import TodoScreen from '../screens/Todo';
 import TodoDetailsScreen from '../screens/TodoDetails'
 import TodoInfoScreen from '../screens/TodoInfo';
+import AlarmsScreen from '../screens/Alarms'
 
 import { headerNavigationOptions } from '../utils/helpers';
 
@@ -30,6 +31,9 @@ const SettingNavigator = createStackNavigator({
     Settings: {
         screen: SettingsScreen,
         navigationOptions: () => headerNavigationOptions('Settings')
+    },
+    Alarms: {
+        screen: AlarmsScreen,
     }
 })
 

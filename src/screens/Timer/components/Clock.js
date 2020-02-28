@@ -1,6 +1,6 @@
 import React from 'react';
-import { View, Dimensions, Animated, StyleSheet } from 'react-native';
-import Svg, { Circle, Text as SVGText } from 'react-native-svg';
+import { View, Dimensions, Animated, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import Svg, { Circle, Text as SVGText, Polygon } from 'react-native-svg';
 
 import { getTime } from '../../../utils/helpers';
 
@@ -12,7 +12,7 @@ const circumference = radius * 2 * Math.PI
 const AnimatedCircle = Animated.createAnimatedComponent(Circle)
 
 
-export default ({ seconds, renderPausePlay, circleValue }) => {
+export default ({ seconds, renderPausePlay, circleValue, nextSession }) => {
     const arc = circleValue.interpolate({
         inputRange: [0, 1],
         outputRange: [0, 2 * Math.PI]
@@ -33,6 +33,9 @@ export default ({ seconds, renderPausePlay, circleValue }) => {
                 {renderPausePlay()}
                 <SVGText x={(size / 5) + 5} y={(size / 2) + 10} fontSize="80" fill="#009DDD" strokeWidth="2">{getTime(seconds)}</SVGText>
             </Svg>
+            <TouchableOpacity onPress={nextSession}>
+                <Text style={{ fontSize: 25, color: "#009DDD" }}>{"Skip"}</Text>
+            </TouchableOpacity>
         </View>
     )
 }
