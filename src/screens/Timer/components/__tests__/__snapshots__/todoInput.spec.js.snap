@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Testing TodoInput Component renders correctly 1`] = `
+exports[`Testing TodoInput Component should render correctly 1`] = `
 <View
   style={
     Object {

@@ -2,7 +2,11 @@ import React from 'react';
 import { TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
-export default ({ navigate }) => (
+interface Props {
+    navigate: (screen: string) => void
+}
+
+export default ({ navigate }: Props) => (
     <TouchableOpacity style={styles.iconContainer} onPress={() => navigate('TodoDetails')}>
         <Ionicons name="ios-add" size={36} color="white" />
     </TouchableOpacity>

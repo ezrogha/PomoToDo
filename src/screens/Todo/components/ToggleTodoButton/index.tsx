@@ -1,7 +1,13 @@
 import React from 'react'
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 
-export default ({ todoTabState, doneTabState, changeTab }) => {
+interface Props {
+    todoTabState: boolean,
+    doneTabState: boolean,
+    changeTab: (tab: number) => void
+}
+
+export default ({ todoTabState, doneTabState, changeTab }: Props) => {
     return (
         <View style={styles.view}>
             <TouchableOpacity activeOpacity={1} onPress={() => changeTab(0)} style={[styles.button, todoTabState && styles.active]}>

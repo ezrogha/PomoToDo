@@ -5,11 +5,15 @@ import { Audio } from 'expo-av';
 
 import sounds from '../../../Alarms/Sounds'
 
+interface Alarm {
+    name: string,
+    module: any
+}
 
-export default () => {
+const WorkCompletion: React.FC = () => {
     const [selectedSound, setSelectedSound] = useState("")
 
-    const chooseAlarm = async (alarm) => {
+    const chooseAlarm = async (alarm: Alarm) => {
         setSelectedSound(alarm.name)
         const soundObject = new Audio.Sound();
         try {
@@ -53,18 +57,20 @@ export default () => {
     }
 
     return (
-            <ScrollView>
-                <View style={{
-                    backgroundColor: "white",
-                    flex: 1,
-                    borderBottomColor: "lightgrey",
-                    borderTopColor: "lightgrey",
-                    borderBottomWidth: 0.8,
-                    borderTopWidth: 0.8,
-                }}>
-                    {renderAlarms()}
-                </View>
-            </ScrollView>
+        <ScrollView>
+            <View style={{
+                backgroundColor: "white",
+                flex: 1,
+                borderBottomColor: "lightgrey",
+                borderTopColor: "lightgrey",
+                borderBottomWidth: 0.8,
+                borderTopWidth: 0.8,
+            }}>
+                {renderAlarms()}
+            </View>
+        </ScrollView>
 
     )
 }
+
+export default WorkCompletion

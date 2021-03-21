@@ -11,8 +11,14 @@ const radius = (size - strokeWidth * 2) / 2
 const circumference = radius * 2 * Math.PI
 const AnimatedCircle = Animated.createAnimatedComponent(Circle)
 
+interface Props {
+    seconds: number,
+    renderPausePlay: () => void,
+    circleValue: Animated.Value,
+    nextSession: () => void
+}
 
-export default ({ seconds, renderPausePlay, circleValue, nextSession }) => {
+const Clock: React.FC<Props> = ({ seconds, renderPausePlay, circleValue, nextSession }) => {
     const arc = circleValue.interpolate({
         inputRange: [0, 1],
         outputRange: [0, 2 * Math.PI]
@@ -47,3 +53,5 @@ const styles = StyleSheet.create({
         alignItems: "center"
     }
 })
+
+export default Clock

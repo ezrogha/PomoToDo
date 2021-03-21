@@ -2,9 +2,9 @@ import { Asset } from 'expo-asset';
 
 class Sound {
     module : any
-    name: String
+    name: string
 
-    constructor(module: any, name: String) {
+    constructor(module: any, name: string) {
         this.module = module
         this.name = name
         Asset.fromModule(this.module).downloadAsync();

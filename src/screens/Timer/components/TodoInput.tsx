@@ -3,7 +3,12 @@ import { StyleSheet, View, TextInput, Dimensions, Platform } from 'react-native'
 
 const { height, width } = Dimensions.get('window');
 
-export default ({ text, onChange }) => (
+interface Props {
+    text: string,
+    onChange: () => void
+}
+
+const TodoInput: React.FC<Props> = ({ text, onChange }) => (
     <View style={styles.textContainter}>
         <TextInput style={styles.textInput} placeholder="Enter Task name..." value={text} onChangeText={onChange} />
     </View>
@@ -20,3 +25,5 @@ const styles = StyleSheet.create({
         color: "grey"
     }
 })
+
+export default TodoInput

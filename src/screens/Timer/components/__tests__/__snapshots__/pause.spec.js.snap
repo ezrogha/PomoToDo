@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Testing Pause Component renders correctly 1`] = `
+exports[`Testing Pause Component should render correctly 1`] = `
 Array [
   <RNSVGRect
     fill={

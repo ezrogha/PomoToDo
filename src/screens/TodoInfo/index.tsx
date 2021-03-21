@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 
 import { toggleTodo, deleteTodo, startTodo, stopTodo } from '../../store/actions/todoActions';
 
+
 class TodoInfo extends Component {
 
     state = {

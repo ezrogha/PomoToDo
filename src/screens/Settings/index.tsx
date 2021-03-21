@@ -24,7 +24,57 @@ const shortBreakTimes = ["Custom", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 15]
 const longBreakTimes = ["Custom", 0, 5, 10, 15, 20, 25, 30, 35, 40]
 const intervalTimes = ["Custom", 0, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
-class Settings extends Component {
+interface State {
+    workInterval: number,
+    shortBreak: number,
+    longBreak: number,
+    longBreakAfter: number,
+    currentListItem: string,
+    pickerSelectedValue: number | string,
+    pickerItemArray: any[],
+    pickerMetric: string,
+    displayModal: boolean,
+    xModalValue: Animated.Value,
+    opacityModalValue: Animated.Value,
+    showCustomInputbox: boolean,
+    customPickerInputValue: number | string
+}
+
+interface Route {
+    route: string
+}
+
+interface NavigationProps {
+    state: {
+        params?: {
+            route?: string
+        }
+    },
+    navigate: (screen: string, route: Route) => void
+}
+
+interface Props {
+    navigation: NavigationProps,
+    setWorkInterval: (value: string) => void,
+    setShortBreak: (value: string) => void,
+    setLongBreak: (value: string) => void,
+    setLongBreakAfter: (value: string) => void,
+}
+
+interface AnimatedOptions {
+    toValue: number,
+    duration: number,
+    easing: Easing["linear"]
+}
+
+type TriggerModal = {
+    list: any[],
+    selectedValue: number,
+    listItem: string,
+    metric: string
+}
+
+class Settings extends Component<Props, State> {
     state = {
         workInterval: 25,
         shortBreak: 5,
@@ -38,9 +88,10 @@ class Settings extends Component {
         xModalValue: new Animated.Value(-(height / 2)),
         opacityModalValue: new Animated.Value(0),
         showCustomInputbox: false,
+        customPickerInputValue: ''
     }
 
-    onUpdatePicker = (value) => {
+    onUpdatePicker = (value: string) => {
         if (value === "Custom") {
             this.setState({
                 showCustomInputbox: true,
@@ -55,11 +106,11 @@ class Settings extends Component {
         }
     }
 
-    chooseAlarm = (route) => {
+    chooseAlarm = (route: string) => {
         this.props.navigation.navigate("Alarms", { route })
     }
 
-    triggerModal = ({ list, selectedValue, listItem, metric }) => {
+    triggerModal = ({ list, selectedValue, listItem, metric }: TriggerModal) => {
         this.setState({
             displayModal: true,
             pickerItemArray: list,
@@ -100,8 +151,8 @@ class Settings extends Component {
         })
     }
 
-    setTimerValues = (selectedValue) => {
-        const { currentListItem,  } = this.state
+    setTimerValues = (selectedValue: string) => {
+        const { currentListItem, } = this.state
         const { setWorkInterval, setShortBreak, setLongBreak, setLongBreakAfter } = this.props
         if (currentListItem === "workInterval") {
             setWorkInterval(selectedValue)
@@ -116,6 +167,7 @@ class Settings extends Component {
 
     savePickerValue = () => {
         const { currentListItem, pickerSelectedValue, customPickerInputValue } = this.state
+        // @ts-ignore
         if (this.state.pickerSelectedValue === "Custom") {
             this.setTimerValues(customPickerInputValue)
             this.setState({

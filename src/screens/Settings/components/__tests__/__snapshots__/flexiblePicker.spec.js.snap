@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Testing FlexiblePicker Component renders correctly 1`] = `
+exports[`Testing FlexiblePicker Component should render correctly 1`] = `
 <View>
   <RCTPicker
     items={

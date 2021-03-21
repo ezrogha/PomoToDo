@@ -9,7 +9,32 @@ import { toggleTodo, deleteTodo, startTodo, stopTodo } from '../../store/actions
 
 const { width, height } = Dimensions.get('window');
 
-class Todo extends Component {
+interface Params {
+    changeTab: (val: number) => void,
+    todoButtonState: boolean,
+    doneButtonState: boolean,
+}
+
+interface Props {
+    navigation: {
+        setParams: (params: Params) => void
+    }
+}
+
+interface State {
+    todoTabState: boolean,
+    doneTabState: boolean,
+    unCheckedItems: any[],
+    checkedItems: any[],
+    xTodoValues: any[],
+    notificationText: string,
+    natificationColor: string,
+    notificationOpacityValue: Animated.Value,
+    notificationYValue: Animated.Value
+}
+
+
+class Todo extends Component<Props, State> {
     static navigationOptions = ({ navigation }) => {
         const { state: { params = {} }, navigate } = navigation
         return {
@@ -86,7 +111,7 @@ class Todo extends Component {
 
     }
 
-    changeTab = (val) => {
+    changeTab = (val: number) => {
         // 0 is for Todo
         // 1 is for Done
         const boolVal = val === 0 ? true : false
@@ -104,7 +129,7 @@ class Todo extends Component {
 
     toggleCheckbox = ({ id, isChecked }) => {
         this.props.toggleTodo(id, isChecked)
-        this.setState({ 
+        this.setState({
             natificationColor: "rgba(0, 128, 0, 0.5)",
             notificationText: isChecked ? "Task has been checked" : "Task has been unchecked"
         })
@@ -126,7 +151,7 @@ class Todo extends Component {
         ).start(() => {
             this.props.deleteTodo(id)
             this.setState({ todoTabState: !this.state.todoTabState }, () => {
-                this.setState({ 
+                this.setState({
                     todoTabState: !this.state.todoTabState,
                     natificationColor: "rgba(256, 0, 0, 0.5)",
                     notificationText: "Task has been deleted"

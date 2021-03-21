@@ -5,7 +5,28 @@ import { Text, View, TextInput, StyleSheet, TouchableOpacity, Alert } from 'reac
 import { addTodo, editTodo } from '../../store/actions/todoActions';
 import { headerNavigationOptions } from '../../utils/helpers'
 
-class TodoDetails extends Component {
+interface Props {
+    navigation: {
+        state: {
+            params: {
+                editRequest: () => void,
+                todoItem: () => void
+            }
+        },
+        navigate: (val: string) => void
+    },
+    editTodo: () => void,
+    addTodo: () => void
+}
+
+interface State {
+    isChecked: boolean,
+    title: string,
+    detail: string,
+    isRunning: boolean
+}
+
+class TodoDetails extends Component<Props, State> {
 
     state = {
         isChecked: false,
@@ -50,11 +71,11 @@ class TodoDetails extends Component {
         this.props.navigation.navigate('Todo')
     }
 
-    onChangeTitle = (title) => {
+    onChangeTitle = (title: string) => {
         this.setState({ title })
     }
 
-    onChangeDetail = (detail) => {
+    onChangeDetail = (detail: string) => {
         this.setState({ detail })
     }
 

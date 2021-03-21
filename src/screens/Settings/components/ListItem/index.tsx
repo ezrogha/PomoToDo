@@ -1,7 +1,21 @@
 import React from 'react'
 import { Text, View, TouchableOpacity, StyleSheet } from 'react-native'
 
-export default ({ title, value, triggerModal, chooseAlarm }) => (
+type ModalProps = {
+    list: any[],
+    selectedValue: number,
+    listItem: string,
+    metric: string
+}
+
+interface Props {
+    title: string,
+    value: string,
+    triggerModal?: () => void,
+    chooseAlarm?: (route: string) => void
+}
+
+const ListItem: React.FC<Props> = ({ title, value, triggerModal, chooseAlarm }) => (
     <TouchableOpacity style={styles.listItem} onPress={triggerModal || chooseAlarm}>
         <View>
             <Text style={[styles.listItemText, { color: "#333" } ]}>{title}</Text>
@@ -28,3 +42,5 @@ const styles = StyleSheet.create({
         color: "rgb(100, 100, 100)"
     },
 })
+
+export default ListItem;
